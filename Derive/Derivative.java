@@ -1,5 +1,3 @@
-package util;
-
 /*
  * Program:	Derivative
  * Version: 1.2
@@ -10,7 +8,10 @@ package util;
  *
  * Finds the derivative of a basic polynomial of any length.
  */
+package Derive;
+
 import java.util.*;
+import util.Term;
 
 /**
  * Finds the derivative of a basic polynomial
@@ -22,6 +23,8 @@ import java.util.*;
  * @author Domenick
  */
 public class Derivative {
+	/** Instance of the Derivative */
+	private static Derivative singlton = new Derivative();
 	/**
 	 * Main method that handles input from user and output
 	 * 
@@ -35,6 +38,24 @@ public class Derivative {
 		strReader.close();
 		String deriv1 = deriv(poly);
 		System.out.println(deriv1);
+	}
+	
+	/**
+	 * Gets the instance of the
+	 * 
+	 * @return the instance of the Converter
+	 */
+	public static Derivative getInstance() {
+		return singlton;
+	}
+
+	/**
+	 * Breaks down the polynomial into separate terms
+	 * @param poly String value for the polynomial
+	 */
+	public void breakDown(String poly) {
+		ArrayList<Term> terms = new ArrayList<Term>();
+		terms.add(new Term("D"));
 	}
 
 	/**
@@ -179,18 +200,18 @@ public class Derivative {
 					constVal = "" + c;
 				}
 
-				if (count > 0) { 
+				if (count > 0) {
 					// As long as this is not the first section of the poly.
-					if (c < 0) { 
+					if (c < 0) {
 						// If the constant is negative.
 						derivOut += " - " + (constVal.substring(1));
-					} else { 
+					} else {
 						// If the constant is positive.
 						derivOut += " + " + constVal;
 					}
-					
+
 					count++;
-					
+
 					continue;
 				} else {
 					if (c < 0) {
@@ -198,9 +219,9 @@ public class Derivative {
 					} else {
 						derivOut += constVal;
 					}
-					
+
 					count++;
-					
+
 					continue;
 				}
 			}
@@ -227,7 +248,7 @@ public class Derivative {
 			} else {
 				section = "" + constVal + "x^" + expVal;
 			}
-			if (count > 0) {	
+			if (count > 0) {
 				// As long as this is not the first section of the poly
 				if (c < 0) {
 					section = " - " + (section.substring(1));
