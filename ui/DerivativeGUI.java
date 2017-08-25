@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Derive.Derivative;
+
 //import Derive.Derivative;
 
 /**
@@ -132,9 +134,9 @@ public class DerivativeGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		if (e.getSource() == btnRun) {
-			System.out.println("Button \"Convert\" clicked");
+			System.out.println("Button \"Derive\" *click*");
 			try{
-				//lblOut.setText(Derivative.getInstance().convert(tbNumber.getText(), cboCurBase.getSelectedIndex() + 2, cboIntBase.getSelectedIndex() + 2));
+				lblOut.setText(Derivative.getInstance().derive(tbPoly.getText()));
 			} catch(IllegalArgumentException p){
 				JOptionPane.showMessageDialog(null, p, "Error Message" , JOptionPane.INFORMATION_MESSAGE);
 			}

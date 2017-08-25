@@ -4,7 +4,7 @@
  *
  * Author: Domenick DiBiase 
  * Date Written: 6, February 2016
- * Last Updated: 22, August 2017
+ * Last Updated: 24, August 2017
  *
  * Finds the derivative of a basic polynomial of any length.
  */
@@ -25,25 +25,13 @@ import util.Term;
 public class Derivative {
 	/** Instance of the Derivative */
 	private static Derivative singlton = new Derivative();
-	/**
-	 * Main method that handles input from user and output
-	 * 
-	 * @param arg
-	 *            command-line arguments
-	 */
-	public static void main(String[] arg) {
-		System.out.print("Enter the polynomial in terms of X\n(only decimals no fractions): ");
-		Scanner strReader = new Scanner(System.in);
-		String poly = strReader.nextLine();
-		strReader.close();
-		String deriv1 = deriv(poly);
-		System.out.println(deriv1);
-	}
 	
+	private String polyFinal = "";
+
 	/**
 	 * Gets the instance of the
 	 * 
-	 * @return the instance of the Converter
+	 * @return the instance of the Derivative
 	 */
 	public static Derivative getInstance() {
 		return singlton;
@@ -51,11 +39,39 @@ public class Derivative {
 
 	/**
 	 * Breaks down the polynomial into separate terms
-	 * @param poly String value for the polynomial
+	 * 
+	 * @param poly
+	 *            String value for the polynomial
+	 * @return ArrayList of the terms in the polynomial
 	 */
-	public void breakDown(String poly) {
+	public ArrayList<Term> breakDown(String poly) {
+		if (poly == null || poly.equals(""))
+			throw new IllegalArgumentException();
+
+		/** Array list for the terms in the polynomial */
 		ArrayList<Term> terms = new ArrayList<Term>();
-		terms.add(new Term("D"));
+
+		if (poly.length() == 1) {
+			terms.add(new Term(poly));
+			return terms;
+		}
+
+		/** The temporary front position of the term */
+		int tempFront = 0;
+
+		for (int i = 0; i < poly.length(); i++) {
+			if (poly.charAt(i) == '+' || poly.charAt(i) == '-') {
+				if (i != 0) {
+					terms.add(new Term(poly.substring(tempFront, i)));
+					tempFront = i;
+				}
+			} else {
+				if (i == poly.length() - 1) {
+					terms.add(new Term(poly.substring(tempFront)));
+				}
+			}
+		}
+		return terms;
 	}
 
 	/**
@@ -65,9 +81,17 @@ public class Derivative {
 	 *            The polynomial as a string
 	 * @return derivOut The derivative of the polynomial
 	 */
-	public static String deriv(String poly) {
+	public String derive(String poly) {
+		
+		ArrayList<Term> terms = breakDown(poly);
 
-		poly = poly.toLowerCase();
+		
+		for (int k = 0; k < terms.size(); k++) {
+			polyFinal += "" + terms.get(k).getCoef() + terms.get(k).getVar() + " ";
+		}
+		return polyFinal;
+		
+		/*
 		int front = 0, back = 0;
 		// Keeps count of the number of the section. The first sec wont have a
 		// symbol in front.
@@ -96,12 +120,12 @@ public class Derivative {
 			indexMinus = poly.indexOf(("-"), h + 1);
 
 			if (indexPlus == indexMinus) // If there is no more "+" or "-" int
-											// the poly.
+											// the poly
 			{
 				break; // Breaks the loop.
 			} else {
 				if (indexPlus == -1 || indexMinus == -1) // If there is only one
-															// of the 2.
+															// of the 2
 				{
 					if (indexPlus > indexMinus) // If "+" is the only one left.
 					{
@@ -148,21 +172,18 @@ public class Derivative {
 
 				o = n - 1;
 			}
-			if (count > 0) // As long as this is not the first section of the
-							// poly.
-			{
-				if (xpos == 0 && exp == 0) // If there is no constant nor
-											// exponent.
-				{
+			if (count > 0) { // As long as this is not the first section of the
+								// poly
+				// If there is no constant nor exponent
+				if (xpos == 0 && exp == 0) {
 					derivOut += " + 1";
 					min = min2;
 					count++;
 					continue;
 				}
 			} else {
-				if (xpos == 0 && exp == 0) // If there is no constant nor
-											// exponent.
-				{
+				// If there is no constant nor exponent
+				if (xpos == 0 && exp == 0) {
 					derivOut += "1";
 					min = min2;
 					count++;
@@ -370,6 +391,6 @@ public class Derivative {
 			}
 		}
 		derivOut += section;// each section derivative added.
-		return derivOut;
+		return derivOut;*/
 	}
 }
